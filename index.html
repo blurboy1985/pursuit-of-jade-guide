@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pursuit of Jade (逐玉) — Full Story Guide</title>
+  <style>
+    :root {
+      --bg: #0f0f13;
+      --surface: #1a1a24;
+      --card: #22222f;
+      --border: #333345;
+      --text: #e8e6e3;
+      --muted: #9a97a0;
+      --accent: #c9a96e;
+      --accent2: #7eb8b0;
+      --red: #d94f5c;
+      --green: #5fb87a;
+      --blue: #5b9bd5;
+      --purple: #b07ed8;
+      --gold: #d4a843;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      text-align: center;
+      padding: 80px 20px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '逐玉';
+      position: absolute;
+      font-size: 200px;
+      opacity: 0.04;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-weight: 900;
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--gold);
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+    .hero .subtitle {
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .hero .meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .hero .meta span {
+      background: rgba(255,255,255,0.08);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* TOC */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin: -30px auto 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .toc h2 { color: var(--gold); margin-bottom: 15px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; }
+    .toc ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+    .toc li a { color: var(--accent2); font-size: 0.95rem; display: block; padding: 4px 0; }
+    .toc li a:hover { color: var(--gold); }
+
+    /* Sections */
+    section { margin-bottom: 50px; }
+    h2.section-title {
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h3 { color: var(--accent); margin: 25px 0 12px; font-size: 1.3rem; }
+    h4 { color: var(--accent2); margin: 18px 0 8px; font-size: 1.1rem; }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card h4 { margin-top: 0; }
+    .card .actor { color: var(--muted); font-size: 0.85rem; }
+    .card .role { color: var(--accent2); font-size: 0.85rem; margin-bottom: 8px; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .arc {
+      position: relative;
+      margin-bottom: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .arc-header {
+      background: linear-gradient(90deg, var(--card), var(--surface));
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .arc-header .arc-badge {
+      background: var(--accent);
+      color: var(--bg);
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .arc-header h3 { margin: 0; color: var(--gold); font-size: 1.2rem; }
+    .arc-body { padding: 20px 24px; }
+    .ep {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      gap: 12px;
+    }
+    .ep:last-child { border-bottom: none; }
+    .ep-num {
+      color: var(--accent);
+      font-weight: 700;
+      min-width: 45px;
+      font-size: 0.95rem;
+      padding-top: 1px;
+    }
+    .ep-text { color: var(--muted); font-size: 0.92rem; }
+    .ep-text strong { color: var(--text); }
+
+    /* Mystery box */
+    .mystery-box {
+      background: linear-gradient(135deg, #1e1e30, #2a1e30);
+      border: 1px solid var(--purple);
+      border-radius: 12px;
+      padding: 30px;
+      position: relative;
+    }
+    .mystery-box::before {
+      content: '🔮';
+      position: absolute;
+      top: -15px; left: 20px;
+      font-size: 28px;
+      background: var(--bg);
+      padding: 0 8px;
+    }
+    .mystery-box h3 { color: var(--purple); margin-top: 0; }
+    .flow {
+      font-family: 'Courier New', monospace;
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 15px 0;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      color: var(--accent2);
+    }
+
+    /* Character map */
+    .char-map {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+    .char-map pre {
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--muted);
+      white-space: pre;
+    }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
+    th { color: var(--gold); font-weight: 600; background: var(--card); }
+    td { color: var(--muted); }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+    }
+
+    /* Spoiler */
+    .spoiler { background: var(--text); color: var(--text); border-radius: 4px; cursor: pointer; }
+    .spoiler:hover { color: var(--bg); }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero { padding: 50px 15px 40px; }
+      .toc { margin: -20px 10px 30px; padding: 20px; }
+      .arc-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .char-map pre { font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Pursuit of Jade</h1>
+  <div class="subtitle">逐玉 · Zhú Yù — Complete Story Guide</div>
+  <p style="color:var(--muted); max-width:600px; margin:0 auto;">
+    A butcher's daughter rescues a fallen noble in the snow. Their fake marriage ignites a love worth fighting a war for — and unravels a 17-year-old conspiracy at the highest levels of power.
+  </p>
+  <div class="meta">
+    <span>📺 40 Episodes</span>
+    <span>🎬 2026</span>
+    <span>⭐ Zhang Linghe · Tian Xiwei</span>
+    <span>📖 Based on novel by Tuan Zi Lai Xi</span>
+    <span>🌐 Netflix · iQIYI · WeTV</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>📑 Contents</h2>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#characters">Characters</a></li>
+    <li><a href="#character-map">Relationship Map</a></li>
+    <li><a href="#arc1">Ep 1–6: The Fake Marriage</a></li>
+    <li><a href="#arc2">Ep 7–12: Assassins & Secrets</a></li>
+    <li><a href="#arc3">Ep 13–19: Truth Unravels</a></li>
+    <li><a href="#arc4">Ep 20–25: Battlefield</a></li>
+    <li><a href="#arc5">Ep 26–33: Identity Revealed</a></li>
+    <li><a href="#arc6">Ep 34–40: Capital & Finale</a></li>
+    <li><a href="#mystery">The 17-Year Mystery</a></li>
+    <li><a href="#ending">Ending</a></li>
+  </ul>
+</nav>
+
+<!-- Overview -->
+<section id="overview">
+  <h2 class="section-title">🎭 Overview</h2>
+  <table>
+    <tr><th>Native Title</th><td>逐玉 (Zhú Yù)</td></tr>
+    <tr><th>Also Known As</th><td>Chasing Jade, Zhu Yu</td></tr>
+    <tr><th>Genre</th><td>Historical · Romance · War · Mystery</td></tr>
+    <tr><th>Episodes</th><td>40 × 45 min</td></tr>
+    <tr><th>Aired</th><td>6 – 26 March 2026</td></tr>
+    <tr><th>Director</th><td>Zeng Qingjie</td></tr>
+    <tr><th>Starring</th><td>Zhang Linghe, Tian Xiwei, Snow Kong, Deng Kai, Ren Hao</td></tr>
+    <tr><th>Logline</th><td>A humble butcher's daughter enters a marriage of convenience with a disgraced nobleman hiding his identity. As war tears them apart, she follows him to the battlefield — and together they uncover a conspiracy that reaches the throne itself.</td></tr>
+  </table>
+</section>
+
+<!-- Characters -->
+<section id="characters">
+  <h2 class="section-title">👥 Characters</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h4>Xie Zheng 谢征</h4>
+      <div class="role">Marquis of Wu'an · Male Lead</div>
+      <div class="actor">Zhang Linghe 张凌赫</div>
+      <p>On the surface a frail scholar "Yan Zheng." In reality the fallen Marquis of Wu'an, seeking revenge for his family's massacre 17 years ago. Becomes Changyu's matrilocal husband in a marriage of convenience that turns into genuine love.</p>
+    </div>
+    <div class="card">
+      <h4>Fan Changyu 范长玉</h4>
+      <div class="role">The Butcher's Daughter · Female Lead</div>
+      <div class="actor">Tian Xiwei 田曦薇</div>
+      <p>Feisty, resilient, with superhuman strength. Orphaned and raising her younger sister alone. Enters a fake marriage to protect her home, later becomes a skilled warrior and "Flower-Crowned General." Her father's true identity is the key to the 17-year mystery.</p>
+    </div>
+    <div class="card">
+      <h4>Yu Qianqian 俞千千</h4>
+      <div class="role">Restaurant Owner · Changyu's Best Friend</div>
+      <div class="actor">Snow Kong 孔雪儿</div>
+      <p>Owner of Yixiang Restaurant. A resourceful woman with a hidden son (Bao'er) — who turns out to be the true Imperial heir. In the novel, she's a modern-day transmigrator. Ends up as Empress Dowager.</p>
+    </div>
+    <div class="card">
+      <h4>Qi Min / Sui Yuanhuai 齐珉</h4>
+      <div class="role">Rice Merchant / Rebel Prince</div>
+      <div class="actor">Deng Kai 邓凯</div>
+      <p>Obsessed with Qianqian. Actually the true Imperial Grandson, swapped at birth during a palace fire. Raised by Prince Changxin as his son. His ambition to seize the throne leads to his downfall.</p>
+    </div>
+    <div class="card">
+      <h4>Gongsun Yin 公孙吟</h4>
+      <div class="role">Academy Headmaster · Xie Zheng's Sworn Brother</div>
+      <div class="actor">Li Qing 李庆</div>
+      <p>Loyal friend and strategist. Secretly in love with Princess Qi Shu through a spiritual chess-game connection. Performs CPR (taught by Qianqian!) to save the princess.</p>
+    </div>
+    <div class="card">
+      <h4>Li Huai'an / Wen Kan 李怀安</h4>
+      <div class="role">Martial Commandant of Jizhou</div>
+      <div class="actor">Ren Hao 任豪</div>
+      <p>Nobleman tied to powerful families, trained alongside Xie Zheng under General He. Quietly harbors feelings for Changyu. Becomes General after Gen. He's death.</p>
+    </div>
+    <div class="card">
+      <h4>Wei Yan 韦彦</h4>
+      <div class="role">Prime Minister / Chancellor</div>
+      <div class="actor">Yan Yikuan 严屹宽</div>
+      <p>Xie Zheng's maternal uncle. Powerful faction leader. Raised Xie Zheng for 17 years. Ultimately kills himself to quell the rebellion after the truth is exposed.</p>
+    </div>
+    <div class="card">
+      <h4>Princess Qi Shu 齐姝</h4>
+      <div class="role">Royal Princess · Qi Shu</div>
+      <div class="actor">(Supporting Cast)</div>
+      <p>Half-sister of the Crown Prince. Fell for Gongsun Yin through remote chess games. Sneaks into the war zone as a physician. Refuses political marriage to Xie Zheng.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Character Map -->
+<section id="character-map">
+  <h2 class="section-title">🕸️ Relationship Map</h2>
+  <div class="char-map">
+<pre>
+┌───────────────── IMPERIAL COURT ─────────────────┐
+│                                                   │
+│   Emperor Qi Sheng (puppet) ── scared of sister   │
+│         │                                         │
+│    Princess Qi Shu ◄──chess──► Gongsun Yin ──► Xie Zheng
+│         │                        (Headmaster)    (Marquis)
+│         │                              │           │
+│    betrothed to ──► Li Huai'an ◄──trained──┘      │
+│                        (Commandant)               │
+│                              │                    │
+│    Grand Tutor Li (faction leader) ◄──grandson──┘ │
+│                                                   │
+│    Chancellor Wei Yan ◄──maternal uncle──► Xie Zheng
+│         │                                         │
+│    Wei Xuan (incompetent son)                     │
+└───────────────────────────────────────────────────┘
+
+┌─────────────── THE REBELS ───────────────────────┐
+│                                                   │
+│   Prince Changxin (Sui Tuo)                       │
+│         ├── 1st son: Sui Yuanhuai = Qi Min ◄──SWAPPED AT BIRTH (true heir)
+│         │        │                                │
+│         │        obsessed with ──► Yu Qianqian    │
+│         │                          (her son Bao'er = Qi Min's child
+│         │                           = Imperial Great-Grandson)
+│         │                                         │
+│         └── 2nd son: Sui Yuanqing ── massacred Lin'an
+│                    killed by Xie Zheng            │
+│                                                   │
+│   Shi Sanniang ── bandit chief, Queen of Qingfeng │
+└───────────────────────────────────────────────────┘
+
+┌─────────────── THE FAN FAMILY ───────────────────┐
+│                                                   │
+│   Father: Wei Qilin (real name!) ──► military man │
+│             │    comrade of Gen. He Jingyuan      │
+│             │    fled Jinzhou massacre → changed  │
+│             │    name to Fan Erniu, became butcher │
+│             │                                     │
+│   Mother ── committed suicide to protect daughters │
+│             │                                     │
+│   Changyu ─══════ married ══════► Xie Zheng      │
+│   (Butcher)      (fake → real)    (Marquis)       │
+│             │                                     │
+│   Changning ── younger sister                     │
+│   "Grandfather" ── not blood, took Fan father in  │
+│   Uncle Fan Daniu ── greedy gambler (killed Ep 7) │
+│                                                   │
+│   Song Yan ── ex-fiancé, later Ministry scholar   │
+│                                                   │
+│   Pig Butcher Squad: Jin Yuanbao, Man Di,         │
+│   Man Cang, Man Wu ── debt collectors → loyal     │
+│   companions (Man Di dies in battle)              │
+└───────────────────────────────────────────────────┘
+</pre>
+  </div>
+</section>
+
+<!-- Arc 1 -->
+<section id="arc1">
+  <h2 class="section-title">🏠 Arc 1: The Fake Marriage (Ep 1–6)</h2>
+  <div class="arc">
+    <div class="arc-header">
+      <span class="arc-badge">EP 1–6</span>
+      <h3>Snow, Survival & a Wedding</h3>
+    </div>
+    <div class="arc-body">
+      <div class="ep"><span class="ep-num">EP 1</span><span class="ep-text">Bandits kill Fan parents. Changyu finds a wounded man in the snow — <strong>Xie Zheng</strong>, fallen Marquis of Wu'an. He lies: "I'm Yan Zheng, a refugee." She takes him in.</span></div>
+      <div class="ep"><span class="ep-num">EP 2</span><span class="ep-text">Greedy uncle & thugs try to seize the house deed. Neighbors suggest a <strong>matrilocal husband</strong> to protect the property. Yan Zheng overhears and agrees — without her even asking.</span></div>
+      <div class="ep"><span class="ep-num">EP 3</span><span class="ep-text">They set terms: she'll hire doctors, he'll leave when recovered. Court hears Marquis Wu'an may be dead. Two factions (Wei vs Li) search secretly for his body.</span></div>
+      <div class="ep"><span class="ep-num">EP 4</span><span class="ep-text">Uncle files petition. Yan Zheng helps Changyu with legal docs. Ex-fiancé <strong>Song Yan</strong> offers to make her concubine — she refuses. Yan Zheng kicks him out. <em>Accidental kisses.</em> <strong>WEDDING DAY</strong> — everyone stunned by the groom's beauty.</span></div>
+      <div class="ep"><span class="ep-num">EP 5</span><span class="ep-text">Fake consummation (candle shadows). Song family tries to reclaim betrothal money. Yan Zheng <strong>secretly bought back her pawned jade hairpin</strong> — the one she pawned for his medicine.</span></div>
+      <div class="ep"><span class="ep-num">EP 6</span><span class="ep-text">Daily life deepens. Neighbors, sister <strong>Changning</strong>, and Yan Zheng form a warm domestic unit. The pig shop opens for business.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Arc 2 -->
+<section id="arc2">
+  <h2 class="section-title">⚔️ Arc 2: Assassins & Secrets (Ep 7–12)</h2>
+  <div class="arc">
+    <div class="arc-header">
+      <span class="arc-badge">EP 7–12</span>
+      <h3>Iron Suicide Warriors & Hidden Identities</h3>
+    </div>
+    <div class="arc-body">
+      <div class="ep"><span class="ep-num">EP 7</span><span class="ep-text">Uncle found dead. Changyu arrested. <strong>Wei family's elite assassins</strong> attack — Yan Zheng & Changyu fight together. <strong>Gongsun Yin</strong> arrives with forged travel docs to free them.</span></div>
+      <div class="ep"><span class="ep-num">EP 8</span><span class="ep-text">Gongsun Yin discovers his best friend is now a butcher's matrilocal husband! 🤣 We learn: Xie Zheng was <strong>ambushed while investigating the Jinzhou massacre</strong> (17 yrs ago). <strong>Yu Qianqian</strong> offers Changyu a meat supply deal.</span></div>
+      <div class="ep"><span class="ep-num">EP 9</span><span class="ep-text">Fake consummation #2 (neighbors eavesdropping 😂). MORE assassins! Chancellor Wei sent them for a letter the Fan family has. <strong>Li Huai'an</strong> arrives, suspects Yan Zheng is the Marquis. General He sends a Tiger Seal to Wei Yan as leverage.</span></div>
+      <div class="ep"><span class="ep-num">EP 10</span><span class="ep-text">General He is Changyu's father's old comrade. Li Huai'an moves into Lin'an to "investigate." He and Yan Zheng have history — trained together under General He. <em>Tension builds.</em></span></div>
+      <div class="ep"><span class="ep-num">EP 11</span><span class="ep-text">Yan Zheng warns Li Huai'an: "Don't fence-sit." Secret meeting with Black Robed Cavalry. Yu Qianqian is ambushed — reveals a <strong>hidden underground room where her son Bao'er lives</strong>. Romance seeded: Gongsun Yin ♥ Qi Shu.</span></div>
+      <div class="ep"><span class="ep-num">EP 12</span><span class="ep-text">Qianqian's mysterious past deepens. She has a son, pursued by wealthy rice merchant <strong>Qi Min</strong>. Changyu bonds with Qianqian.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Arc 3 -->
+<section id="arc3">
+  <h2 class="section-title">💔 Arc 3: The Truth Unravels · Farewell (Ep 13–19)</h2>
+  <div class="arc">
+    <div class="arc-header">
+      <span class="arc-badge">EP 13–19</span>
+      <h3>Family Secrets, Massacre & Separation</h3>
+    </div>
+    <div class="arc-body">
+      <div class="ep"><span class="ep-num">EP 13</span><span class="ep-text">Qianqian borrows Yan Zheng to pose as her husband to meet Qi Min. Yan Zheng recognizes the name — Qi Min hoarded 200K shi of grain. Qianqian advises Changyu to <em>have a child</em> with him. 💡</span></div>
+      <div class="ep"><span class="ep-num">EP 14</span><span class="ep-text">New Year. Kids (Bao'er & Changning) get lost. Qi Min's spy learns Bao'er's true birthdate — <strong>SHOCK: BAO'ER IS QI MIN'S CHILD!</strong> Gongsun Yin paints a family portrait. Yan Zheng plans to leave in 3 days.</span></div>
+      <div class="ep"><span class="ep-num">EP 15</span><span class="ep-text"><strong>SHOCK:</strong> Changyu's "grandfather" reveals her father was NOT his biological son. Real father paid to be adopted 17 yrs ago. Parents left a suicide note (burned by uncle). Yan Zheng decides it's time to leave.</span></div>
+      <div class="ep"><span class="ep-num">EP 16</span><span class="ep-text"><strong>Sui Yuanqing</strong> (Prince Changxin's son) leads a riot. Yan Zheng's Blood Robe Cavalry intercepts the grain. Changyu rescues Qianqian from arrest, hides Bao'er. Yan Zheng fights Sui Yuanqing at a cliff — <strong>shoots him</strong>.</span></div>
+      <div class="ep"><span class="ep-num">EP 17</span><span class="ep-text"><strong>TIME TO PART.</strong> Changyu gives him money, clothes, and a <strong>DIVORCE LETTER</strong>. He's furious. They argue, he kisses her forcefully, she slaps him. <em>"Wait a year for me."</em> He leaves. She finds his birthday gifts → <em>breaks down.</em> <strong>Bandits attack Lin'an.</strong></span></div>
+      <div class="ep"><span class="ep-num">EP 18</span><span class="ep-text"><strong>BRUTAL MASSACRE.</strong> Sui Yuanqing (alive!) hired bandit chief <strong>Shi Sanniang</strong> to massacre Lin'an. Constable Wang, Chef Li, neighbors, Magistrate Cui — ALL KILLED. Changyu lured bandits away, cornered at cliff, <strong>jumps off</strong>. Xie Zheng arrives, finds her hanging on vines. 🥺</span></div>
+      <div class="ep"><span class="ep-num">EP 19</span><span class="ep-text">Xie Zheng performs scraping therapy to save her. Promises to marry her. But war calls — he must lead his army. Changyu starts searching for her sister Changning (taken by rebels).</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Arc 4 -->
+<section id="arc4">
+  <h2 class="section-title">🗡️ Arc 4: Battlefield · Reunion (Ep 20–25)</h2>
+  <div class="arc">
+    <div class="arc-header">
+      <span class="arc-badge">EP 20–25</span>
+      <h3>The Northwest Pig Butcher Squad</h3>
+    </div>
+    <div class="arc-body">
+      <div class="ep"><span class="ep-num">EP 20</span><span class="ep-text">Changyu becomes <strong>"Butcher Beauty of Jizhou"</strong> — freeing trafficked children. Arrested by mistake; Li Huai'an bails her out. Sui Yuanqing sends Xie Zheng the family portrait + threat.</span></div>
+      <div class="ep"><span class="ep-num">EP 21</span><span class="ep-text">Bao'er is traumatized by Sui Yuanhuai's cruelty. Changyu in a labor camp with elderly scholar <strong>Tao Yi</strong> (secretly Xie Zheng's teacher & former Grand Tutor!) and the Jin brothers.</span></div>
+      <div class="ep"><span class="ep-num">EP 22</span><span class="ep-text">Changyu's superhuman strength: carries 2 baskets of stone up a mountain! 🏔️ Tao Yi reveals the plan: blow the dam to flood enemies. <strong>Tao Yi sacrifices himself</strong> by swapping lots. Xie Zheng saves Changning. <strong>DAM EXPLODES.</strong> 💥</span></div>
+      <div class="ep"><span class="ep-num">EP 23</span><span class="ep-text"><strong>Northwest Pig Butcher Squad</strong> kills enemy spies. Xie Zheng doesn't realize it's Changyu's group. He sends a bird: "Changning is saved." Changyu volunteers to lead supply team.</span></div>
+      <div class="ep"><span class="ep-num">EP 24</span><span class="ep-text">Princess Qi Shu arrives as physician. Changyu reunites with Changning! Works in medical tent. <strong>REUNITED with Xie Zheng</strong> — but she still calls him "Yan Zheng."</span></div>
+      <div class="ep"><span class="ep-num">EP 25</span><span class="ep-text">Qi Shu warns Changyu about "handsome men who lie." Changyu and Xie Zheng share tender moments. He still hasn't revealed his identity.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Arc 5 -->
+<section id="arc5">
+  <h2 class="section-title">🔥 Arc 5: Identity Revealed · The War (Ep 26–33)</h2>
+  <div class="arc">
+    <div class="arc-header">
+      <span class="arc-badge">EP 26–33</span>
+      <h3>The Mask Comes Off</h3>
+    </div>
+    <div class="arc-body">
+      <div class="ep"><span class="ep-num">EP 26</span><span class="ep-text"><strong>BIG REVEAL:</strong> Changyu drugs Xie Zheng's medicine, puts on his uniform, fights in his place. Kills General Shi Hu with his own mace! Xie Zheng rides in — soldiers cheer "Marquis Wu'an!" <strong>Changyu realizes: HER HUSBAND IS THE MARQUIS.</strong> He picks her up and rides off. 🐎</span></div>
+      <div class="ep"><span class="ep-num">EP 27</span><span class="ep-text">Forest confrontation. She's furious he lied. He explains: kept identity to protect her. She rejects his proposal — social status gap. Xie Zheng begs Tao Yi to adopt Changyu as god-daughter.</span></div>
+      <div class="ep"><span class="ep-num">EP 28</span><span class="ep-text">Tao Yi adopts her, names her <strong>"Shanjun" 山君</strong>. Changyu leaves camp to find Qianqian & Bao'er. <strong>THE BIG TRUTH:</strong> Bao'er is the TRUE Imperial Grandson. Crown Princess swapped him with Sui Yuanhuai during the palace fire. <em>"Qi Min" is the rightful heir!</em></span></div>
+      <div class="ep"><span class="ep-num">EP 29</span><span class="ep-text">Qianqian drugs Sui Yuanhuai, escapes. Reunites with Changyu. General He gives Changyu custom armor and <strong>twin blades forged by Xie Zheng with his blood</strong>.</span></div>
+      <div class="ep"><span class="ep-num">EP 30</span><span class="ep-text">Changyu takes over Li Huai'an's troops (he's wounded). <strong>BATTLE OF LUCHENG</strong> — Changyu faces Prince Changxin, kills him. DYING REVELATION: "Wei Qilin is a traitor!" Gen. He dies. <strong>Wei Qilin = Changyu's father.</strong></span></div>
+      <div class="ep"><span class="ep-num">EP 31</span><span class="ep-text">Memorial for Xie Zheng's father + funeral for Gen. He. Crowd blames Wei Qilin. Changyu defends him without revealing she's his daughter. Promoted to <strong>5th rank Commandant</strong>.</span></div>
+      <div class="ep"><span class="ep-num">EP 32</span><span class="ep-text">Emperor orders marriage between Xie Zheng and Princess Qi Shu. Xie Zheng rejects it, cuts off a eunuch's ear. He wants Bao'er (true heir) to be future Emperor.</span></div>
+      <div class="ep"><span class="ep-num">EP 33</span><span class="ep-text">Xie Zheng investigates the 17-year tragedy. Changyu keeps distance, calls him "Your Lordship." Political factions sharpen.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Arc 6 -->
+<section id="arc6">
+  <h2 class="section-title">🏛️ Arc 6: Capital · Rebellion · Finale (Ep 34–40)</h2>
+  <div class="arc">
+    <div class="arc-header">
+      <span class="arc-badge">EP 34–40</span>
+      <h3>The Final Battle for Truth & Love</h3>
+    </div>
+    <div class="arc-body">
+      <div class="ep"><span class="ep-num">EP 34</span><span class="ep-text">Back to the capital. Wei Yan vs Li family court battle. Changyu promoted to <strong>"Flower-Crowned General"</strong> (4th grade). Grand Tutor Li plans to crown Qi Min. Li Huaian put under house arrest for disagreeing.</span></div>
+      <div class="ep"><span class="ep-num">EP 35</span><span class="ep-text">Qianqian & Bao'er found and caught by Qi Min. Changyu gets etiquette lessons from ex-fiancé Song Yan. Xie Zheng: <em>"Changyu is the jade."</em> 💎</span></div>
+      <div class="ep"><span class="ep-num">EP 36</span><span class="ep-text">Xie Zheng's triumphant return. Changyu throws her <strong>hair tie</strong> instead of silk handkerchief. <strong>Wei Yan canes Xie Zheng 180 times</strong> (family law) for marrying a "traitor's daughter." Qianqian steals Qi Min's tiger tally (it's FAKE!).</span></div>
+      <div class="ep"><span class="ep-num">EP 37</span><span class="ep-text">Palace banquet. <strong>Aphrodisiac trap!</strong> Gongsun Yin performs CPR to save Qi Shu (modern technique taught by Qianqian the transmigrator!). Xie Zheng kills the corrupt Eunuch Li.</span></div>
+      <div class="ep"><span class="ep-num">EP 38</span><span class="ep-text"><strong>They finally consummate their marriage.</strong> 🔥 Qi Min's fake tiger tally revealed. Changyu strikes the <strong>DENGWEN DRUM</strong> — imperial appeal to reopen her father's case. People throw vegetables at her. Xie Zheng finds his mother's letter proving Wei Yan abandoned the army.</span></div>
+      <div class="ep"><span class="ep-num">EP 39</span><span class="ep-text"><strong>COURT CLIMAX:</strong> Wei Yan claims letter & seal are fake. Tao Yi confirms seal is real. <strong>QI MIN STORMS THE PALACE</strong> with soldiers, sits on the throne! Xie Zheng & Wei Yan fight together. Qi Min falls from wall — Qianqian falls too. Changyu catches her. <strong>ULTIMATE TRUTH: The LATE EMPEROR set the fire, replaced water with oil, lured Wei Yan back.</strong></span></div>
+      <div class="ep"><span class="ep-num">EP 40</span><span class="ep-text"><strong>Wei Yan kills himself</strong> to quell the rebellion. The young Emperor (Bao'er) ascends. <strong>Xie Zheng becomes REGENT. Fan Changyu becomes GENERAL.</strong> Yu Qianqian becomes EMPRESS DOWAGER. They step away from power → return to <strong>LIN'AN TOWN</strong> for a quiet life together. <em>"True victory is not in ruling, but in surviving without losing yourself."</em> Happy ending. Final Easter egg: a "what if" alternate scene.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- The Mystery -->
+<section id="mystery">
+  <h2 class="section-title">🔮 The 17-Year Jinzhou Mystery</h2>
+  <div class="mystery-box">
+    <h3>How It All Connects</h3>
+    <div class="flow">
+LATE EMPEROR feared Crown Prince Chengde's growing power.
+
+AT A PALACE BANQUET:
+  Young Wei Yan said "forbidden words" about abdicating the Emperor.
+  → 5 people heard it: Wei Yan, Crown Prince Chengde,
+     Tao Yi, Xie Linshan (Xie Zheng's father),
+     Wei Qilin (Changyu's father)
+
+THE LATE EMPEROR'S SCHEME:
+  1. Set fire to Qingyuan Palace
+  2. Replaced water with oil so it couldn't be extinguished
+  3. Consort Shu's letter to Wei Yan was a SETUP
+     → to lure Wei Yan back to the capital
+  4. Crown Prince & Xie Linshan DIED in battle
+  5. Wei Qilin fled to Lin'an, changed name to Fan Erniu
+  6. Xie Zheng survived, fell from cliff → rescued by Changyu
+
+THE PALACE FIRE (16 years ago):
+  Crown Princess swapped the real heir (Qi Min) with
+  Prince Changxin's son (Sui Yuanhuai).
+  Disfigured Qi Min's face with fire.
+  → Qi Min grew up as "Sui Yuanhuai"
+  → True heir grew up as "Qi Min" — rightful Imperial Grandson
+
+  "Qi Min" (the rice merchant) = Sui Yuanhuai in disguise
+  His son Bao'er = Qi Min's child = Imperial Great-Grandson
+
+THE ENDING:
+  ✅ True heir (Bao'er) becomes Emperor
+  ✅ Wei Yan suicides to end the cycle
+  ✅ Xie Zheng chooses love over power
+  ✅ Changyu avenges her father and chooses peace
+    </div>
+  </div>
+</section>
+
+<!-- Ending -->
+<section id="ending">
+  <h2 class="section-title">🌅 Ending</h2>
+  <div class="card" style="border-left: 3px solid var(--gold);">
+    <h4 style="color: var(--gold); margin-top: 0;">Where Everyone Ends Up</h4>
+    <table>
+      <tr><th>Character</th><th>Final Fate</th></tr>
+      <tr><td>Xie Zheng & Fan Changyu</td><td>Return to Lin'an Town for a quiet life together. He chose love over power; she chose peace over vengeance.</td></tr>
+      <tr><td>Bao'er</td><td>Crowned Emperor — the true Imperial heir at last.</td></tr>
+      <tr><td>Yu Qianqian</td><td>Becomes <strong>Empress Dowager</strong>, wielding influence behind the young throne.</td></tr>
+      <tr><td>Wei Yan (Chancellor)</td><td><strong>Kills himself</strong> to quell the rebellion — ends the cycle of betrayal.</td></tr>
+      <tr><td>Qi Min / Sui Yuanhuai</td><td><strong>Dies</strong> after falling from the palace wall, choosing to let go to save Qianqian.</td></tr>
+      <tr><td>Li Huai'an</td><td>Becomes General, succeeds General He Jingyuan.</td></tr>
+      <tr><td>Gongsun Yin & Qi Shu</td><td>Together — their spiritual chess romance becomes real.</td></tr>
+      <tr><td>Shi Sanniang</td><td>Given a new life by Changyu (despite massacring Lin'an).</td></tr>
+      <tr><td>Song Yan</td><td>Fired from Ministry of Rites after failing to recognize the Marquis.</td></tr>
+    </table>
+    <p style="color: var(--muted); margin-top: 15px; font-style: italic;">
+      "The ending is ultimately a happy one for the main couple, though layered with realism. They find peace, but the world around them remains imperfect. True victory is not in ruling, but in surviving without losing oneself."
+    </p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>Built with 🐂 by DaNiu for Daniel · Pursuit of Jade © 2026 Tencent Video / iQIYI</p>
+  <p style="margin-top:8px;">Based on the novel <em>Zhu Yu</em> (逐玉) by Tuan Zi Lai Xi (团子来袭)</p>
+</footer>
+
+</body>
+</html>
