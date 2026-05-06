@@ -120,13 +120,89 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 20px;
-      transition: border-color 0.2s;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
     }
-    .card:hover { border-color: var(--accent); }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .card-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      background: var(--surface);
+    }
+    .card-body { padding: 16px 20px 20px; }
     .card h4 { margin-top: 0; }
     .card .actor { color: var(--muted); font-size: 0.85rem; }
     .card .role { color: var(--accent2); font-size: 0.85rem; margin-bottom: 8px; }
+    .card p { margin: 8px 0 0; font-size: 0.9rem; }
+
+    /* Character photo section */
+    .char-photos {
+      margin: 20px 0;
+    }
+    .char-photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .char-photo-item {
+      text-align: center;
+    }
+    .char-photo-item img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .char-photo-item .char-label {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .char-photo-item .char-label strong {
+      color: var(--text);
+      display: block;
+    }
+
+    /* Relationship chart */
+    .rel-chart {
+      margin: 20px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .rel-chart img {
+      width: 100%;
+      display: block;
+    }
+
+    /* Poster section */
+    .poster-section {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+      margin: 20px 0;
+    }
+    .poster-section img {
+      max-width: 240px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .poster-section .poster-info {
+      flex: 1;
+    }
+
+    @media (max-width: 600px) {
+      .poster-section { flex-direction: column; align-items: center; }
+      .poster-section img { max-width: 200px; }
+      .char-photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .char-photo-item img { height: 220px; }
+    }
 
     /* Timeline */
     .timeline { position: relative; padding-left: 30px; }
@@ -253,6 +329,8 @@
       .arc-header { flex-direction: column; align-items: flex-start; gap: 6px; }
       .card-grid { grid-template-columns: 1fr; }
       .char-map pre { font-size: 0.65rem; }
+      .poster-section { flex-direction: column; align-items: center; }
+      .poster-section img { max-width: 200px; }
     }
   </style>
 </head>
@@ -297,16 +375,21 @@
 <!-- Overview -->
 <section id="overview">
   <h2 class="section-title">🎭 Overview</h2>
-  <table>
-    <tr><th>Native Title</th><td>逐玉 (Zhú Yù)</td></tr>
-    <tr><th>Also Known As</th><td>Chasing Jade, Zhu Yu</td></tr>
-    <tr><th>Genre</th><td>Historical · Romance · War · Mystery</td></tr>
-    <tr><th>Episodes</th><td>40 × 45 min</td></tr>
-    <tr><th>Aired</th><td>6 – 26 March 2026</td></tr>
-    <tr><th>Director</th><td>Zeng Qingjie</td></tr>
-    <tr><th>Starring</th><td>Zhang Linghe, Tian Xiwei, Snow Kong, Deng Kai, Ren Hao</td></tr>
-    <tr><th>Logline</th><td>A humble butcher's daughter enters a marriage of convenience with a disgraced nobleman hiding his identity. As war tears them apart, she follows him to the battlefield — and together they uncover a conspiracy that reaches the throne itself.</td></tr>
-  </table>
+  <div class="poster-section">
+    <img src="https://upload.wikimedia.org/wikipedia/en/2/21/Pursuit_of_Jade_poster.jpg" alt="Pursuit of Jade poster">
+    <div class="poster-info">
+      <table>
+        <tr><th>Native Title</th><td>逐玉 (Zhú Yù)</td></tr>
+        <tr><th>Also Known As</th><td>Chasing Jade, Zhu Yu</td></tr>
+        <tr><th>Genre</th><td>Historical · Romance · War · Mystery</td></tr>
+        <tr><th>Episodes</th><td>40 × 45 min</td></tr>
+        <tr><th>Aired</th><td>6 – 26 March 2026</td></tr>
+        <tr><th>Director</th><td>Zeng Qingjie</td></tr>
+        <tr><th>Starring</th><td>Zhang Linghe, Tian Xiwei, Snow Kong, Deng Kai, Ren Hao</td></tr>
+        <tr><th>Logline</th><td>A humble butcher's daughter enters a marriage of convenience with a disgraced nobleman hiding his identity. As war tears them apart, she follows him to the battlefield — and together they uncover a conspiracy that reaches the throne itself.</td></tr>
+      </table>
+    </div>
+  </div>
 </section>
 
 <!-- Characters -->
@@ -314,52 +397,110 @@
   <h2 class="section-title">👥 Characters</h2>
   <div class="card-grid">
     <div class="card">
-      <h4>Xie Zheng 谢征</h4>
-      <div class="role">Marquis of Wu'an · Male Lead</div>
-      <div class="actor">Zhang Linghe 张凌赫</div>
-      <p>On the surface a frail scholar "Yan Zheng." In reality the fallen Marquis of Wu'an, seeking revenge for his family's massacre 17 years ago. Becomes Changyu's matrilocal husband in a marriage of convenience that turns into genuine love.</p>
+      <img class="card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrGI9lvmiFuMIlRWR_9NTl2l_b4sOksgrB9bhRDMUDloU025M8lFz1yrU8bb6_4smpestjzmUpR_6BecIM4RoXU1fdJN8DtIfDPO5k4UOu3j7AFYoxZwrrtGHgMXibg9snINQ1n8OvwVlbhg4a_2myOId13oaFBo71ITxxuTXQjlvvPAk6UZC5Er0B3uY/s1080/Screenshot_2026-03-04-20-32-53-931-edit_com.android.chrome.webp" alt="Zhang Linghe as Xie Zheng" loading="lazy">
+      <div class="card-body">
+        <h4>Xie Zheng 谢征</h4>
+        <div class="role">Marquis of Wu'an · Male Lead</div>
+        <div class="actor">Zhang Linghe 张凌赫</div>
+        <p>On the surface a frail scholar "Yan Zheng." In reality the fallen Marquis of Wu'an, seeking revenge for his family's massacre 17 years ago. Becomes Changyu's matrilocal husband in a marriage of convenience that turns into genuine love.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Fan Changyu 范长玉</h4>
-      <div class="role">The Butcher's Daughter · Female Lead</div>
-      <div class="actor">Tian Xiwei 田曦薇</div>
-      <p>Feisty, resilient, with superhuman strength. Orphaned and raising her younger sister alone. Enters a fake marriage to protect her home, later becomes a skilled warrior and "Flower-Crowned General." Her father's true identity is the key to the 17-year mystery.</p>
+      <img class="card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiMO51l-YNstybpv8C1H20LCfj8Lb-2HCXaDMNB9tmJOVmvCH4C4BXi6Ushz26JuWBbixJWeH9Jl7iJbPuNLfGq6KPEOBvQoA3HlR6b4XOCvZI5aNP9HKlBlBhyPepcJTQlCBiZ8bjKuAUH7HxpCxka1MSQcuLfUA0RlLhTdZf1LLc3a8A_J0fI71cBHYs/s1080/Screenshot_2026-03-16-04-18-14-706-edit_com.android.chrome.webp" alt="Tian Xiwei as Fan Changyu" loading="lazy">
+      <div class="card-body">
+        <h4>Fan Changyu 范长玉</h4>
+        <div class="role">The Butcher's Daughter · Female Lead</div>
+        <div class="actor">Tian Xiwei 田曦薇</div>
+        <p>Feisty, resilient, with superhuman strength. Orphaned and raising her younger sister alone. Enters a fake marriage to protect her home, later becomes a skilled warrior and "Flower-Crowned General." Her father's true identity is the key to the 17-year mystery.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Yu Qianqian 俞千千</h4>
-      <div class="role">Restaurant Owner · Changyu's Best Friend</div>
-      <div class="actor">Snow Kong 孔雪儿</div>
-      <p>Owner of Yixiang Restaurant. A resourceful woman with a hidden son (Bao'er) — who turns out to be the true Imperial heir. In the novel, she's a modern-day transmigrator. Ends up as Empress Dowager.</p>
+      <img class="card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiy_NWgvcSpY4EPe4UIAecUxamIwwxIT3pZ4IlQPtVnrYQDVyF3mGjJ_3vUiUZHKMcI5e1-DcyjYhjletxubz-q58AGNRYABEaG1h4YTgL2Csbfn3B6w-JtJSXgi5T_WkN_m4TaTYDSsI7abG__qgK4SLUPz8OLo3nHcI4vxtEggYUaLJBnSP9eYTq7Mjs/s1080/Screenshot_2026-03-19-20-29-28-050-edit_com.android.chrome.webp" alt="Snow Kong as Yu Qianqian" loading="lazy">
+      <div class="card-body">
+        <h4>Yu Qianqian 俞千千</h4>
+        <div class="role">Restaurant Owner · Changyu's Best Friend</div>
+        <div class="actor">Snow Kong 孔雪儿</div>
+        <p>Owner of Yixiang Restaurant. A resourceful woman with a hidden son (Bao'er) — who turns out to be the true Imperial heir. In the novel, she's a modern-day transmigrator. Ends up as Empress Dowager.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Qi Min / Sui Yuanhuai 齐珉</h4>
-      <div class="role">Rice Merchant / Rebel Prince</div>
-      <div class="actor">Deng Kai 邓凯</div>
-      <p>Obsessed with Qianqian. Actually the true Imperial Grandson, swapped at birth during a palace fire. Raised by Prince Changxin as his son. His ambition to seize the throne leads to his downfall.</p>
+      <img class="card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgplWaU1LKhEsqXu-13PaiVIx2yUdu9NCCi3aTn1-4XQuKm9euEcuD4z4mgZNcps6IoGVrH8XGl8fTuUWVnecdNhryMeHiAP_7zWMuTLFd5jvGfM4QJudl-Q_gCwZTQ6VEJTPZMHMk3oEFcfVog2kdoMNY20dJqHTREYeGvlIDGfz1yHyymZ_gO7JFYPpo/s1080/Screenshot_2026-03-12-06-46-28-232-edit_com.android.chrome.webp" alt="Deng Kai as Qi Min" loading="lazy">
+      <div class="card-body">
+        <h4>Qi Min / Sui Yuanhuai 齐珉</h4>
+        <div class="role">Rice Merchant / Rebel Prince</div>
+        <div class="actor">Deng Kai 邓凯</div>
+        <p>Obsessed with Qianqian. Actually the true Imperial Grandson, swapped at birth during a palace fire. Raised by Prince Changxin as his son. His ambition to seize the throne leads to his downfall.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Gongsun Yin 公孙吟</h4>
-      <div class="role">Academy Headmaster · Xie Zheng's Sworn Brother</div>
-      <div class="actor">Li Qing 李庆</div>
-      <p>Loyal friend and strategist. Secretly in love with Princess Qi Shu through a spiritual chess-game connection. Performs CPR (taught by Qianqian!) to save the princess.</p>
+      <img class="card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLhvkiXP2CIZ3F-z4aPxS5Erk4dcEeuTS-wMW2vbZfieoNkpZlchJ5zVoVO_DL7BJxD4q0fN2mVgQGJ7Xb9zvEBEwyJfDT4B6KbFPNBqL-sDNFuiyiy6pnJvSAhUNr2dPZbwMnfBSjA2y4TyaP1n8KU8Kwmsqp6cW6-mI2Cyi0HwWXS7LCqfeHiW908XE/s1080/Screenshot_2026-03-04-20-33-48-061-edit_com.android.chrome.webp" alt="Ren Hao as Li Huai'an" loading="lazy">
+      <div class="card-body">
+        <h4>Li Huai'an / Wen Kan 李怀安</h4>
+        <div class="role">Martial Commandant of Jizhou</div>
+        <div class="actor">Ren Hao 任豪</div>
+        <p>Nobleman tied to powerful families, trained alongside Xie Zheng under General He. Quietly harbors feelings for Changyu. Becomes General after Gen. He's death.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Li Huai'an / Wen Kan 李怀安</h4>
-      <div class="role">Martial Commandant of Jizhou</div>
-      <div class="actor">Ren Hao 任豪</div>
-      <p>Nobleman tied to powerful families, trained alongside Xie Zheng under General He. Quietly harbors feelings for Changyu. Becomes General after Gen. He's death.</p>
+      <img class="card-img" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg5-44s0FDB50d1MyKCRg8JJWdF8Kd9owApItfMH6uQaIz8ivH-6VSDTu9ufrwh1fmHFY0bVsTe0niO59PB0aAlBZ6o9t80wahlKxNjbDMLC-wnNZNKY19O1I2n2uyDX7GDDzKOeV_O-lVR0TVnTxg7O21tvdMN28LsmuQaI28u30LLJ1BfhVtkA4-2ZwQ/s1080/Screenshot_2026-03-12-06-52-50-255-edit_com.android.chrome.webp" alt="Deng Kai as Qi Min (white hair)" loading="lazy">
+      <div class="card-body">
+        <h4>Qi Min (White Hair) 👤</h4>
+        <div class="role">The True Imperial Grandson</div>
+        <div class="actor">Deng Kai 邓凯</div>
+        <p>His striking white hair and cold gaze make him the drama's most unsettling villain. Actually the legitimate heir to the throne, disfigured in a palace fire and raised as Prince Changxin's son.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:40px;">Supporting Cast</h3>
+  <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+    <div class="card">
+      <div class="card-body">
+        <h4>Gongsun Yin 公孙吟</h4>
+        <div class="role">Academy Headmaster</div>
+        <div class="actor">Li Qing 李庆</div>
+        <p>Loyal friend & strategist. Secretly in love with Princess Qi Shu through a spiritual chess-game connection. Performs CPR to save her.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Wei Yan 韦彦</h4>
-      <div class="role">Prime Minister / Chancellor</div>
-      <div class="actor">Yan Yikuan 严屹宽</div>
-      <p>Xie Zheng's maternal uncle. Powerful faction leader. Raised Xie Zheng for 17 years. Ultimately kills himself to quell the rebellion after the truth is exposed.</p>
+      <div class="card-body">
+        <h4>Wei Yan 韦彦</h4>
+        <div class="role">Prime Minister / Chancellor</div>
+        <div class="actor">Yan Yikuan 严屹宽</div>
+        <p>Xie Zheng's maternal uncle. Raised him for 17 years. Kills himself to quell the rebellion.</p>
+      </div>
     </div>
     <div class="card">
-      <h4>Princess Qi Shu 齐姝</h4>
-      <div class="role">Royal Princess · Qi Shu</div>
-      <div class="actor">(Supporting Cast)</div>
-      <p>Half-sister of the Crown Prince. Fell for Gongsun Yin through remote chess games. Sneaks into the war zone as a physician. Refuses political marriage to Xie Zheng.</p>
+      <div class="card-body">
+        <h4>Princess Qi Shu 齐姝</h4>
+        <div class="role">Royal Princess</div>
+        <div class="actor">Yu Zhongli 俞中丽</div>
+        <p>Half-sister of Crown Prince. Fell for Gongsun Yin via chess. Sneaks into war zone as physician.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h4>Sui Yuanqing 随元青</h4>
+        <div class="role">Rebel Prince · 2nd Son</div>
+        <div class="actor">Lin Muran 林沐然</div>
+        <p>Prince Changxin's heir. Massacred Lin'an town. Killed by Xie Zheng at a cliff.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h4>Fan Changning 范长宁</h4>
+        <div class="role">Changyu's Younger Sister</div>
+        <div class="actor">Cao Yanning 曹艳宁</div>
+        <p>Changyu's beloved younger sister. Taken hostage by rebels, later reunited.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h4>Shi Sanniang 石三娘</h4>
+        <div class="role">Bandit Chief · Qingfeng</div>
+        <div class="actor">Lin Siyi 林思意</div>
+        <p>Chief Master of Qingfeng Stronghold. Hired by Sui Yuanqing to massacre Lin'an.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -367,6 +508,10 @@
 <!-- Character Map -->
 <section id="character-map">
   <h2 class="section-title">🕸️ Relationship Map</h2>
+  <div class="rel-chart">
+    <img src="https://wiki.d-addicts.com/images/c/c1/Pursuit_of_Jade_Chart.jpg" alt="Pursuit of Jade Relationship Chart" loading="lazy">
+  </div>
+  <h3>Key Factions</h3>
   <div class="char-map">
 <pre>
 ┌───────────────── IMPERIAL COURT ─────────────────┐
@@ -444,9 +589,11 @@
       <div class="ep"><span class="ep-num">EP 6</span><span class="ep-text">Daily life deepens. Neighbors, sister <strong>Changning</strong>, and Yan Zheng form a warm domestic unit. The pig shop opens for business.</span></div>
     </div>
   </div>
+  <div style="margin-top:20px; text-align:center;">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhcTML_nHh-W_n29ovPC6HrlotMBUbQq9njqfpu0nro5RGaNdvXE_0vKRKDO7BWGlAzqUxqwk7mKn5eDYxZtuqxQB5oK00WOBH1qYlfTIJhXx-91Yos0o0M14EJDUYg91kNe1Nl8WF_Y3IcQZ4jXJiE0issX37QGNG8NtOZHwhHiCs6Y0VjhTut_bCNouA/s1570/Screenshot_2026-03-16-04-23-51-787-edit_com.android.chrome.webp" alt="Fan Changyu the butcher" style="max-width:100%; max-height:400px; border-radius:10px; border:1px solid var(--border);" loading="lazy">
+    <p style="color:var(--muted); font-size:0.85rem; margin-top:8px; font-style:italic;">Fan Changyu — the pig butcher who became a general 🐷⚔️</p>
+  </div>
 </section>
-
-<!-- Arc 2 -->
 <section id="arc2">
   <h2 class="section-title">⚔️ Arc 2: Assassins & Secrets (Ep 7–12)</h2>
   <div class="arc">
@@ -463,9 +610,11 @@
       <div class="ep"><span class="ep-num">EP 12</span><span class="ep-text">Qianqian's mysterious past deepens. She has a son, pursued by wealthy rice merchant <strong>Qi Min</strong>. Changyu bonds with Qianqian.</span></div>
     </div>
   </div>
+  <div style="margin-top:20px; text-align:center;">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhRMJCfH9TnEBQM9avre7emxjqZno8K_KLwSnsycIeKBu7lcAYpP8-f4YxD-mMYVDiLeYVBjuytbXvrugZhGupIMBonIzKByT0dJZ4sICPpjHMBwWXSOL3ag1P1Zja8aGHllNVIYVA_g0aUxLvWUKJ4YdLUOaC48ffO97ikXp00q0YQk-YhgKu33FoKKlU/s1080/Screenshot_2026-03-12-06-52-41-340-edit_com.android.chrome.webp" alt="Qi Min and Yu Qianqian" style="max-width:100%; max-height:400px; border-radius:10px; border:1px solid var(--border);" loading="lazy">
+    <p style="color:var(--muted); font-size:0.85rem; margin-top:8px; font-style:italic;">The toxic but magnetic Qi Min & Yu Qianqian — obsession vs independence 💔</p>
+  </div>
 </section>
-
-<!-- Arc 3 -->
 <section id="arc3">
   <h2 class="section-title">💔 Arc 3: The Truth Unravels · Farewell (Ep 13–19)</h2>
   <div class="arc">
